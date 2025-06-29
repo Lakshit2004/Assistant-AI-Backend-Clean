@@ -25,8 +25,11 @@ router.get(
     // We generate our own JWT and send it back to a frontend page to be handled.
     const token = generateToken(req.user._id);
     const user = req.user;
-    // Redirect to the correct frontend port with user data
-    res.redirect(`${process.env.FRONTEND_URL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
+    
+    const frontendURL = process.env.FRONTEND_URL;
+
+    // ✅ Redirect with token + user info
+    res.redirect(`${frontendURL}/auth/success?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`);
   }
 );
 
