@@ -15,10 +15,22 @@ require('./config/passport-setup');
 const app = express();
 
 // --- Middleware ---
+const allowedOrigins = [
+  'http://localhost:5174',
+  'https://assistant-ai-chat-voice.netlify.app'
+];
+
 app.use(cors({
-  origin: 'http://localhost:5174', 
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
 }));
+
 app.use(express.json());
 app.use(passport.initialize());
 
